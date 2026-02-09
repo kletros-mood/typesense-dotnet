@@ -9,7 +9,7 @@ namespace Typesense.Tests;
 public class TypesenseFixture : IAsyncLifetime
 {
     public ITypesenseClient Client => GetClient();
-
+    
     public async Task InitializeAsync()
     {
         await Task.WhenAll(

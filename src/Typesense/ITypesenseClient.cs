@@ -659,12 +659,12 @@ public interface ITypesenseClient
     string GenerateScopedSearchKey(string securityKey, string parameters);
 
     /// <summary>
-    /// Upsert search override.
+    /// Upsert curation set (global curation set feature).
     /// </summary>
-    /// <param name="collection">The collection name.</param>
-    /// <param name="overrideName">The name of the search override.</param>
-    /// <param name="searchOverride">The specificiation for the search override.</param>
-    /// <returns>The upserted search override.</returns>
+    /// <param name="curationSetName">The name of the curation set.</param>
+    /// <param name="schema">The curation set schema.</param>
+    /// <returns>The created curation set.</returns>
+    /// <exception cref="ArgumentException"></exception>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
@@ -672,48 +672,44 @@ public interface ITypesenseClient
     /// <exception cref="TypesenseApiConflictException"></exception>
     /// <exception cref="TypesenseApiUnprocessableEntityException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<SearchOverrideResponse> UpsertSearchOverride(string collection, string overrideName, SearchOverride searchOverride);
+    Task<CurationSetSchemaResponse> UpsertCurationSet(string curationSetName, CurationSetSchema schema);
 
     /// <summary>
-    /// Listing all search overrides associated with a given collection.
+    /// Retrieve global curation set by name.
     /// </summary>
-    /// <param name="collection">The collection name.</param>
+    /// <param name="curationSetName">The name of the curation set.</param>
     /// <param name="ctk">The optional cancellation token.</param>
-    /// <returns>List of search overrides.</returns>
+    /// <returns>Curation set with the specified name.</returns>
     /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<ListSearchOverridesResponse> ListSearchOverrides(string collection, CancellationToken ctk = default);
+    Task<CurationSetSchemaResponse> RetrieveCurationSet(string curationSetName, CancellationToken ctk = default);
 
     /// <summary>
-    /// Fetch an individual override associated with a collection.
+    /// List all global curation sets.
     /// </summary>
-    /// <param name="collection">The collection name.</param>
-    /// <param name="overrideName">The override name that should be retrieved.</param>
     /// <param name="ctk">The optional cancellation token.</param>
-    /// <returns>The search override.</returns>
+    /// <returns>All global curation sets.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<SearchOverrideResponse> RetrieveSearchOverride(string collection, string overrideName, CancellationToken ctk = default);
+    Task<ListCurationSetsResponse> ListCurationSets(CancellationToken ctk = default);
 
     /// <summary>
-    /// Deleting an override associated with a collection.
+    /// Delete a global curation set.
     /// </summary>
-    /// <param name="collection">The collection name.</param>
-    /// <param name="overrideName">The override name that should be deleted.</param>
-    /// <returns>The deleted search override.</returns>
+    /// <param name="curationSetName">Curation set name.</param>
+    /// <returns>Name of the deleted curation set.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<DeleteSearchOverrideResponse> DeleteSearchOverride(string collection, string overrideName);
+    Task<DeleteCurationSetResponse> DeleteCurationSet(string curationSetName);
 
     /// <summary>
     /// Upsert collection alias.
@@ -768,12 +764,11 @@ public interface ITypesenseClient
     Task<CollectionAliasResponse> DeleteCollectionAlias(string aliasName);
 
     /// <summary>
-    /// Upsert synonym.
+    /// Upsert synonym set (global synonym set feature).
     /// </summary>
-    /// <param name="collection">Collection to insert the synonym into.</param>
-    /// <param name="synonym">The name of the synonym.</param>
-    /// <param name="schema">The synonym schema.</param>
-    /// <returns>The created synonym.</returns>
+    /// <param name="synonymSetName">The name of the synonym set.</param>
+    /// <param name="schema">The synonym set schema.</param>
+    /// <returns>The created synonym set.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
@@ -782,47 +777,44 @@ public interface ITypesenseClient
     /// <exception cref="TypesenseApiConflictException"></exception>
     /// <exception cref="TypesenseApiUnprocessableEntityException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<SynonymSchemaResponse> UpsertSynonym(string collection, string synonym, SynonymSchema schema);
+    Task<SynonymSetSchemaResponse> UpsertSynonymSet(string synonymSetName, SynonymSetSchema schema);
 
     /// <summary>
-    /// Retrieve synonym in collection on synonym name.
+    /// Retrieve global synonym set by name.
     /// </summary>
-    /// <param name="collection">The synonym collection name.</param>
-    /// <param name="synonym">The name of the synonym.</param>
+    /// <param name="synonymSetName">The name of the synonym set.</param>
     /// <param name="ctk">The optional cancellation token.</param>
-    /// <returns>Synonym on name associated with the collection.</returns>
+    /// <returns>Synonym set with the specified name.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<SynonymSchemaResponse> RetrieveSynonym(string collection, string synonym, CancellationToken ctk = default);
+    Task<SynonymSetSchemaResponse> RetrieveSynonymSet(string synonymSetName, CancellationToken ctk = default);
 
     /// <summary>
-    /// List all synonyms associated with a given collection.
+    /// List all global synonym sets.
     /// </summary>
-    /// <param name="collection">Collection name.</param>
     /// <param name="ctk">The optional cancellation token.</param>
-    /// <returns>All synonyms associated with the collection.</returns>
+    /// <returns>All global synonym sets.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<ListSynonymsResponse> ListSynonyms(string collection, CancellationToken ctk = default);
+    Task<ListSynonymSetsResponse> ListSynonymSets(CancellationToken ctk = default);
 
     /// <summary>
-    /// Delete a synonym associated with a collection.
+    /// Delete a global synonym set.
     /// </summary>
-    /// <param name="collection">Collection name.</param>
-    /// <param name="synonym">Synonym name.</param>
-    /// <returns>Id of the deleted synonym.</returns>
+    /// <param name="synonymSetName">Synonym set name.</param>
+    /// <returns>Id of the deleted synonym set.</returns>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="TypesenseApiException"></exception>
     /// <exception cref="TypesenseApiBadRequestException"></exception>
     /// <exception cref="TypesenseApiNotFoundException"></exception>
     /// <exception cref="TypesenseApiServiceUnavailableException"></exception>
-    Task<DeleteSynonymResponse> DeleteSynonym(string collection, string synonym);
+    Task<DeleteSynonymSetResponse> DeleteSynonymSet(string synonymSetName);
 
     /// <summary>
     /// Get current RAM, CPU, Disk and Network usage metrics.
